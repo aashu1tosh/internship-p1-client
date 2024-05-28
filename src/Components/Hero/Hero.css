@@ -1,0 +1,54 @@
+.hero {
+    margin-top: calc(8% + 75px);
+    /* background-color: green; */
+}
+
+.hero h1 {
+    font-size: clamp(2rem, 4vw, 4rem);
+    text-align: center;
+}
+
+.hero p {
+    text-align: center;
+}
+
+.hero-footer {
+    display: flex;
+    align-items: center;
+    margin: 15px;
+    display: flex;
+    justify-content: center;
+}
+
+.hero-footer input {
+    height: 35px;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+    /* outline: rgb(85, 166, 246);t; */
+    border: 2px solid grey;
+    border-radius: 7px;
+    padding-left: 10px;
+}
+
+.hero-footer input:focus {
+    outline: 2px solid rgb(85, 166, 246);
+    border: none;
+}
+
+.hero-footer button {
+
+    background-color: rgb(85, 166, 246);
+    color: white;
+    outline: none;
+    border: none;
+    border-radius: 6px;
+    height: 35px;
+    margin: 7px;
+    padding: 5px 10px;
+}
+
+@media (max-width: 800px) {
+    .hero {
+        /* margin-top: ; */
+    }
+}

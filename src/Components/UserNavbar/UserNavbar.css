@@ -1,0 +1,27 @@
+#unique-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #333;
+    padding: 10px 20px;
+}
+
+#unique-navbar .navbar-logo img {
+    height: 40px;
+}
+
+#unique-navbar .navbar-links {
+    display: flex;
+}
+
+#unique-navbar .navbar-links li {
+    color: white;
+    text-decoration: none;
+    margin-left: 35px;
+    font-size: 16px;
+    list-style: none;
+}
+
+#unique-navbar .navbar-links li:hover {
+    color: var(--site-color);
+}

@@ -1,0 +1,142 @@
+nav {
+    display: flex;
+    border-radius: 35px;
+    font-size: 18px;
+    padding: 0px 10px;
+    position: fixed;
+    width: max-content;
+    top: 10px;
+    left: 50%;
+    transform: translate(-50%, 0);
+    max-width: 1300px;
+    width: 100%;
+    box-sizing: border-box;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgb(85, 166, 246);
+    box-shadow: 0 0 100px rgba(112, 172, 231, 0.726);
+}
+
+nav ul {
+    list-style: none;
+    cursor: pointer;
+}
+
+
+nav .nav-brand {
+    object-fit: contain;
+    width: 140px;
+}
+
+nav .nav-brand img {
+    width: 170px;
+    height: auto;
+}
+
+nav .nav-main {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin-left: 25px;
+}
+
+nav .nav-main .nav-right {
+    display: flex;
+    align-items: center;
+}
+
+nav .nav-main .nav-right ul {
+    display: flex;
+}
+
+nav .nav-main .nav-right ul li {
+    margin-right: 15px;
+}
+
+nav .nav-main .nav-left ul {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    /* margin-right: 10px; */
+
+}
+
+nav .nav-main .nav-left ul li {
+    margin-right: 15px;
+}
+
+
+
+#sign-up {
+    background-color: var(--secondary-color);
+    color: var(--primary-color);
+    border-radius: 15px;
+    padding: 5px;
+}
+
+#toggle-button {
+    display: none;
+}
+
+nav span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+@media (max-width: 900px) {
+    #toggle-button {
+        display: block;
+        margin-right: 20px;
+        z-index: 2;
+    }
+
+    nav {
+        justify-content: space-between;
+    }
+
+    nav .nav-main {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        right: 0;
+        width: 250px;
+        padding-top: 15%;
+        padding-left: 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        align-items: start;
+        padding-top: 40px;
+        background-color: var(--site-color);
+        height: 100vh;
+        z-index: 1;
+    }
+
+    nav .nav-main .nav-right ul {
+        flex-direction: column;
+    }
+
+    nav .nav-main .nav-right ul li {
+        margin: 7px 0px;
+    }
+
+    nav .nav-main .nav-left ul {
+        flex-direction: column;
+        width: 100%;
+
+    }
+
+    nav .nav-main .nav-left ul li {
+        margin: 10px 0px;
+        width: 100%;
+    }
+
+    /* .icons {
+        position: absolute;
+    } */
+
+    .hide-mobile-bar {
+        right: -300px !important;
+    }
+}

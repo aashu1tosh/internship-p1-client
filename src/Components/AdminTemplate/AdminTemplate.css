@@ -1,0 +1,7 @@
+/* Ensure main content is not covered by the sidebar */
+.main-content {
+    padding-left: 220px;
+    /* margin-top: 25px; */
+    padding-top: 100px;
+}
+

@@ -31,7 +31,15 @@
     width: 80%;
 }
 
-.signin .signin-input input {
+.signin .signin-input .input-box input {
+    width: 90%;
+    border: 0;
+    outline: 0;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+}
+
+.signin .signin-input .input-box {
     width: 90%;
     border: 0;
     outline: 0;
@@ -43,7 +51,7 @@
     z-index: -1;
 }
 
-.signin .signin-input input:focus {
+.signin .signin-input .input-box:focus {
     border-bottom: 2px solid var(--site-color);
 }
 
@@ -61,4 +69,8 @@
 .signin .button {
     display: flex;
     justify-content: center;
+}
+
+input:-internal-autofill-selected {
+    background-color: white !important;
 }

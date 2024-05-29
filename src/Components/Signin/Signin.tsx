@@ -3,7 +3,10 @@ import { AxiosResponse } from 'axios';
 import { SubmitHandler, useForm } from "react-hook-form";
 import { Link, useNavigate } from 'react-router-dom';
 
+import EncryptDecrypt from '@functions/EncryptDecrypt';
 import { notification } from 'antd';
+import { useState } from 'react';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import axios from '../../services/instance';
 import './Signin.css';
 
@@ -18,6 +21,11 @@ const Signin = () => {
     const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [api, contextHolder] = notification.useNotification();
+    const [showPassword, setShowPassword] = useState<boolean>(false);
+
+    const togglePasswordVisibility = () => {
+        setShowPassword(prev => !prev);
+    }
 
     const openNotificationWithIcon = (type: NotificationType, propsMessage: string, propsDescription: string) => {
         api[type]({
@@ -37,14 +45,14 @@ const Signin = () => {
         }).then((response: AxiosResponse) => {
             console.log(response.data.data);
             if (response.status === 200) {
-                localStorage.setItem("accessToken", response.data.data.tokens.accessToken);
+                const token = EncryptDecrypt.encrypt(response.data.data.tokens.accessToken)
+                localStorage.setItem("accessToken", token as string);
                 openNotificationWithIcon('success', "Login Successful", response.data.message);
-                navigate('/admin_dashboard')
-
+                navigate('/admin')
             }
         })
             .catch((error: AxiosResponse) => {
-                openNotificationWithIcon('error', "Login Failed", error.message);
+                openNotificationWithIcon('error', "Login Failed", error.response?.data.message);
                 console.log(error);
             })
     }
@@ -59,25 +67,34 @@ const Signin = () => {
 
                 <div className='signin-input'>
                     <form onSubmit={handleSubmit(onSubmit)}>
-                        <input type="text" placeholder='Email/Username'
-                            {...register("email", {
-                                required: "Email is required",
-                                pattern: {
-                                    value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-                                    message: "Invalid Email Format"
-                                }
-                            })} /><br />
+                        <div className="input-box">
+                            <input type="text" placeholder='Email/Username'
+                                {...register("email", {
+                                    required: "Email is required",
+                                    pattern: {
+                                        value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                                        message: "Invalid Email Format"
+                                    }
+                                })} />
+                        </div>
+
                         {errors.email && <div className='red-text'>{errors.email.message}</div>}
 
-                        <input type="password" placeholder='Password' {...register("password", {
-                            required: "Password is required",
-                            minLength: {
-                                value: 8,
-                                message: "8 Characters Minimum"
-                            }
-                        })} /><br />
-                        {errors.password && <div className='red-text'>{errors.password.message}</div>}
+                        <div className="input-box">
+                            <input type={showPassword ? 'text' : 'password'}
+                                placeholder='Password' {...register("password", {
+                                    required: "Password is required",
+                                    minLength: {
+                                        value: 8,
+                                        message: "8 Characters Minimum"
+                                    }
+                                })} />
+                            <span onClick={togglePasswordVisibility} style={{ float: 'right' }}>
+                                {showPassword ? <FaEye /> : <FaEyeSlash />}
+                            </span>
+                        </div>
 
+                        {errors.password && <div className='red-text'>{errors.password.message}</div>}
 
                         <div className="button">
                             <button className='signin-button' type='submit'>Sign In</button>

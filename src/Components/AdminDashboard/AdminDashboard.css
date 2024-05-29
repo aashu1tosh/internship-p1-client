@@ -1,0 +1,23 @@
+.admin-dashboard {}
+
+.admin-dashboard .reports {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin: 10px;
+}
+
+.admin-dashboard .report {
+    display: flex;
+    border: 1px solid red;
+    padding: 10px 80px 10px 10px;
+    border-radius: 10px;
+    margin: 10px;
+    cursor: pointer;
+}
+
+.admin-dashboard .graph-part {
+
+    height: 60vh;
+    width: 60vw;
+}

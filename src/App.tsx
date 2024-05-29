@@ -3,12 +3,14 @@ import Home from 'Components/Home/Home'
 import Signin from 'Components/Signin/Signin'
 import './App.css'
 
-import AdminTemplate from 'Components/AdminTemplate/AdminTemplate'
+import AdminHome from 'Components/AdminHome/AdminHome'
 import React from 'react'
 import {
   createBrowserRouter,
   RouterProvider,
 } from "react-router-dom"
+import ProtectedRoute from './ProtectedRoute'
+import ChangePassword from 'Components/ChangePassword/ChangePassword'
 
 function App() {
   const router = createBrowserRouter([
@@ -22,13 +24,23 @@ function App() {
       element: <Signin />
     },
     {
-      path: "/admin_dashboard",
-      element: <AdminTemplate />,
+      path: "/admin",
+      element: <ProtectedRoute />,
       children: [
         {
-          path: "/admin_dashboard",
-          element: <AdminDashboard />
+          path: "",
+          element: <AdminHome />,
+          index: true
+        },
+        {
+          path: "dashboard",
+          element: <AdminDashboard />,
+        },
+        {
+          path: 'change-password',
+          element: <ChangePassword />
         }
+
       ]
     }
   ]);

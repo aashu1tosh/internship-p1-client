@@ -58,7 +58,7 @@ const ChangePassword = () => {
       {contextHolder}
 
       <div className='change-password-welcome'>
-        <p className='welcome'>Change Password</p>
+        <h3 className='welcome'>Change Password</h3>
       </div>
 
       <div>

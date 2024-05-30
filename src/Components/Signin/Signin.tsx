@@ -1,64 +1,61 @@
 import { image } from '@config/constant/image';
-import { AxiosResponse } from 'axios';
-import { SubmitHandler, useForm } from "react-hook-form";
-import { Link, useNavigate } from 'react-router-dom';
-
 import EncryptDecrypt from '@functions/EncryptDecrypt';
-import { notification } from 'antd';
+import { AxiosError, AxiosResponse } from 'axios';
 import { useState } from 'react';
+import { SubmitHandler, useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
+import { Link, useNavigate } from 'react-router-dom';
+import Toast from 'ui/atom/Toast/Toast';
 import axios from '../../services/instance';
 import './Signin.css';
 
-interface formData {
-    email: string,
-    password: string
+interface FormData {
+    email: string;
+    password: string;
 }
 
-type NotificationType = 'success' | 'info' | 'warning' | 'error';
+type ToastType = 'success' | 'error';
 
 const Signin = () => {
     const navigate = useNavigate();
-    const { register, handleSubmit, formState: { errors } } = useForm();
-    const [api, contextHolder] = notification.useNotification();
+    const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
     const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [toastMessage, setToastMessage] = useState<string>('');
+    const [toastType, setToastType] = useState<ToastType>('success');
 
     const togglePasswordVisibility = () => {
         setShowPassword(prev => !prev);
     }
 
-    const openNotificationWithIcon = (type: NotificationType, propsMessage: string, propsDescription: string) => {
-        api[type]({
-            message: propsMessage,
-            description: propsDescription,
-        });
-    };
-
-    const onSubmit: SubmitHandler<formData> = (data) => {
-        axios({
-            method: 'post',
-            url: '/auth',
-            data: {
-                username: data?.email,
-                password: data?.password
-            }
-        }).then((response: AxiosResponse) => {
-            console.log(response.data.data);
-            if (response.status === 200) {
-                const token = EncryptDecrypt.encrypt(response.data.data.tokens.accessToken)
-                localStorage.setItem("accessToken", token as string);
-                openNotificationWithIcon('success', "Login Successful", response.data.message);
-                navigate('/admin')
-            }
-        })
-            .catch((error: AxiosResponse) => {
-                openNotificationWithIcon('error', "Login Failed", error.response?.data.message);
-                console.log(error);
-            })
+    const showToast = (message: string, type: ToastType) => {
+        setToastMessage(message);
+        setToastType(type);
+        setTimeout(() => {
+            setToastMessage('');
+        }, 5000);
     }
+
+    const onSubmit: SubmitHandler<FormData> = (data) => {
+        axios.post('/auth', {
+            username: data.email,
+            password: data.password
+        })
+            .then((response: AxiosResponse) => {
+                console.log(response.data.data);
+                const token = EncryptDecrypt.encrypt(response.data.data.tokens.accessToken);
+                localStorage.setItem("accessToken", token as string);
+                showToast(response.data.message, 'success');
+                navigate('/admin');
+            })
+            .catch((error: AxiosError) => {
+                showToast(`Login Failed \n ${error.response?.data.message}`, 'error');
+                console.error('Error fetching data:', error);
+            });
+    }
+
     return (
         <>
-            {contextHolder}
+            {toastMessage && <Toast message={toastMessage} type={toastType} />}
             <div className='signin'>
                 <div className='signin-welcome'>
                     <p className='welcome'>Welcome</p>
@@ -108,8 +105,7 @@ const Signin = () => {
                 </div>
             </div>
         </>
-
-    )
+    );
 }
 
-export default Signin
+export default Signin;

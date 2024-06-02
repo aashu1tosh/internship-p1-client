@@ -1,0 +1,31 @@
+.admin-list {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.admin-list .admin-list-table {
+    /* border: 1px solid var(--site-color); */
+    width: 80vw;
+}
+
+.admin-list .admin-list-table thead tr {
+    background-color: var(--site-color);
+    padding: 10px;
+}
+
+.admin-list .admin-list-table thead th {
+    padding: 10px;
+    text-align: center;
+}
+
+.admin-list .admin-list-table tbody tr {
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.admin-list .admin-list-table tbody tr th {
+    font-weight: 100;
+    padding: 5px;
+}

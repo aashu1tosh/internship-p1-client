@@ -13,6 +13,7 @@
     justify-content: space-around;
     align-items: center;
     min-width: 500px;
+    min-height: 500px;
 }
 
 .signin .signin-welcome p {

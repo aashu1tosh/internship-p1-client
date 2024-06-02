@@ -5,7 +5,8 @@ import { useState } from 'react';
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
-import Toast from 'ui/atom/Toast/Toast';
+// import Toast from 'ui/atom/Toast/Toast';
+import { toast } from 'ui/atom/Toast/ToastManager';
 import axios from '../../services/instance';
 import './Signin.css';
 
@@ -14,25 +15,14 @@ interface FormData {
     password: string;
 }
 
-type ToastType = 'success' | 'error';
 
 const Signin = () => {
     const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
     const [showPassword, setShowPassword] = useState<boolean>(false);
-    const [toastMessage, setToastMessage] = useState<string>('');
-    const [toastType, setToastType] = useState<ToastType>('success');
 
     const togglePasswordVisibility = () => {
         setShowPassword(prev => !prev);
-    }
-
-    const showToast = (message: string, type: ToastType) => {
-        setToastMessage(message);
-        setToastType(type);
-        setTimeout(() => {
-            setToastMessage('');
-        }, 5000);
     }
 
     const onSubmit: SubmitHandler<FormData> = (data) => {
@@ -43,19 +33,29 @@ const Signin = () => {
             .then((response: AxiosResponse) => {
                 console.log(response.data.data);
                 const token = EncryptDecrypt.encrypt(response.data.data.tokens.accessToken);
+                localStorage.setItem("decryptedToken", response.data.data.tokens.accessToken);
                 localStorage.setItem("accessToken", token as string);
-                showToast(response.data.message, 'success');
+                toast.show({
+                    title: 'Success',
+                    content: 'You have successfully Logged in!',
+                    duration: 5000,  // Duration in milliseconds,
+                    type: 'success'
+                });
                 navigate('/admin');
             })
             .catch((error: AxiosError) => {
-                showToast(`Login Failed \n ${error.response?.data.message}`, 'error');
+                toast.show({
+                    title: 'Failed',
+                    content: error?.response.data.message,
+                    duration: 5000,  // Duration in milliseconds,
+                    type: 'error'
+                });
                 console.error('Error fetching data:', error);
             });
     }
 
     return (
         <>
-            {toastMessage && <Toast message={toastMessage} type={toastType} />}
             <div className='signin'>
                 <div className='signin-welcome'>
                     <p className='welcome'>Welcome</p>

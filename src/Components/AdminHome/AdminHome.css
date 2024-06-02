@@ -1,0 +1,24 @@
+.admin-home {
+    display: flex;
+    /* background-color: red; */
+    flex-wrap: wrap;
+    margin: 0px 20px;
+}
+
+.admin-home .admin-create {
+    width: max-content;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 2px solid var(--site-color);
+    border-radius: 9px;
+}
+
+.admin-home .admin-create h3 {
+    margin-top: 10px;
+}
+
+.admin-home .admin-create:hover {
+    box-shadow: 0 0 24px var(--site-color);
+}

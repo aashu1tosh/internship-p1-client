@@ -17,8 +17,10 @@
     border: 1px solid var(--site-color);
     border-radius: 10px;
     padding: 10px;
-    margin-top: 15px;
     display: flex;
+    max-width: 780px;
+    /* justify-content: center; */
+    margin: 15px auto 0px;
 }
 
 .feature .product-feature .feature-box .feature-box-img {
@@ -58,4 +60,14 @@
     color: var(--site-color);
     margin-top: 10px;
     font-size: 18px;
+}
+
+@media (max-width: 1270px) {
+    .feature-img-container img {
+        display: none;
+    }
+
+    .feature-img-container {
+        display: none !important;
+    }
 }

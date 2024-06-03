@@ -1,0 +1,55 @@
+.update-admin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.update-admin .update-admin-content {
+    width: max-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.update-admin .name-field {
+    display: flex;
+}
+
+.update-admin .email-phone {
+    display: flex;
+}
+
+.update-admin .password {
+    display: flex;
+    align-items: center;
+    justify-self: center;
+}
+
+.update-admin .selectors {
+    display: flex;
+
+}
+
+.update-admin .selectors select {
+    width: 220px;
+
+}
+
+.update-admin .name-field>div,
+.email-phone>div,
+.password>div {
+    margin: 20px;
+    margin-bottom: 0px;
+}
+
+.update-admin .selectors>div {
+    margin: 20px;
+}
+
+.update-admin .btn-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}

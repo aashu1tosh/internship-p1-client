@@ -4,7 +4,6 @@ import { Navigate } from 'react-router-dom';
 
 const ProtectedRoute = () => {
     if (EncryptDecrypt.decrypt(localStorage.getItem('accessToken') as string)) {
-
         return <AdminTemplate />;
     } else
 

@@ -1,0 +1,53 @@
+.create-admin {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+.create-admin .create-admin-content {
+    width: max-content;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.create-admin .name-field {
+    display: flex;
+}
+
+.create-admin .email-phone {
+    display: flex;
+}
+
+.create-admin .password {
+    display: flex;
+}
+
+.create-admin .selectors {
+    display: flex;
+
+}
+
+.create-admin .selectors select {
+    width: 220px;
+
+}
+
+.create-admin .name-field>div,
+.email-phone>div,
+.password>div {
+    margin: 20px;
+    margin-bottom: 0px;
+}
+
+.create-admin .selectors>div {
+    margin: 20px;
+}
+
+.create-admin .btn-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+}

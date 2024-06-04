@@ -1,4 +1,6 @@
-.admin-dashboard {}
+.admin-dashboard {
+    
+}
 
 .admin-dashboard .reports {
     display: flex;
@@ -9,11 +11,12 @@
 
 .admin-dashboard .report {
     display: flex;
-    border: 1px solid red;
+    border: 1px solid var(--site-color);
     padding: 10px 80px 10px 10px;
     border-radius: 10px;
     margin: 10px;
     cursor: pointer;
+
 }
 
 .admin-dashboard .graph-part {

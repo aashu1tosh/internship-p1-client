@@ -41,7 +41,8 @@ const Signin = () => {
                     duration: 5000,  // Duration in milliseconds,
                     type: 'success'
                 });
-                navigate('/admin');
+                // navigate(-1);
+                navigate('/admin', { replace: true });
             })
             .catch((error: AxiosError) => {
                 toast.show({

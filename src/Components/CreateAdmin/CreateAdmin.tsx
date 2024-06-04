@@ -1,127 +1,89 @@
-import axios from '@services/instance';
-import { UserCreateInterface } from '@type/global.types';
-import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
-import { FaPhone, FaUser } from 'react-icons/fa';
-import { MdEmail } from 'react-icons/md';
-import Button from 'ui/atom/Buttons/Buttons';
-import InputField from 'ui/atom/InputField/InputField';
-import SelectOption from 'ui/atom/SelectOption/SelectOption';
-import { toast } from 'ui/atom/Toast/ToastManager';
-import './UpdateAdmin.css';
-import { UpdateAdminProps } from 'interface/global.interface';
+import axios from '@services/instance'
+import { UserCreateInterface } from '@type/global.types'
+import { useForm } from 'react-hook-form'
+import { FaLock, FaPhone, FaUser } from 'react-icons/fa'
+import { MdEmail } from 'react-icons/md'
+import Button from 'ui/atom/Buttons/Buttons'
+import InputField from 'ui/atom/InputField/InputField'
+import SelectOption from 'ui/atom/SelectOption/SelectOption'
+import { toast } from 'ui/atom/Toast/ToastManager'
+import './CreateAdmin.css'
 
-
-
-const UpdateAdmin: React.FC<UpdateAdminProps> = ({ id, closeDialog, userData, setUserData }) => {
-    const { register, handleSubmit, formState: { errors }, reset } = useForm<UserCreateInterface>();
-    const fetchAdmin = async () => {
-        try {
-            const response = await axios.get(`/admin/${id}`);
-            const fetchedData = response.data.data;
-
-            reset({
-                email: fetchedData.email,
-                role: fetchedData.role,
-                allowedFeature: fetchedData.allowedFeature,
-                details: {
-                    firstName: {
-                        en: fetchedData.details.firstName.en,
-                        ne: fetchedData.details.firstName.ne,
-                    },
-                    lastName: {
-                        en: fetchedData.details.lastName.en,
-                        ne: fetchedData.details.lastName.ne
-                    },
-                    phoneNumber: fetchedData.details.phoneNumber
-                }
-            });
-
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        } catch (error: any) {
-            console.error(error);
-            toast.show({
-                title: 'Operation Failed',
-                content: error?.response.data.message,
-                duration: 5000,
-                type: 'error'
-            });
-        }
-    }
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const deepMerge = (target: any, source: any): any => {
-        for (const key in source) {
-            if (source[key] && typeof source[key] === 'object') {
-                if (!target[key]) {
-                    target[key] = {};
-                }
-                deepMerge(target[key], source[key]);
-            } else {
-                target[key] = source[key];
-            }
-        }
-        return target;
-    };
-
-
-    const updateAdmin = async (data: UserCreateInterface) => {
-        // handle form submission
-        console.log(data);
-        try {
-            const response = await axios.patch('/admin', {
-                id: id,
-                role: data.role,
-                allowedFeature: data.allowedFeature,
+const CreateAdmin = () => {
+    const { register, handleSubmit, watch, reset, formState: { errors } } = useForm<UserCreateInterface>({
+        defaultValues: {
+            email: "",
+            password: "",
+            role: "",
+            allowedFeature: [],
+            details: {
                 firstName: {
-                    en: data.details.firstName.en,
-                    ne: data.details.firstName.ne
+                    en: "",
+                    ne: "",
                 },
                 lastName: {
-                    en: data.details.lastName.en,
-                    ne: data.details.lastName.ne
+                    en: '',
+                    ne: ""
                 },
-                phoneNumber: data.details.phoneNumber
+                phoneNumber: ""
+            }
+        }
+    });
+
+    const password = watch('password', '');
+
+    const createAdmin = async (data: UserCreateInterface) => {
+        try {
+            console.log("create admin called");
+            const response = await axios.post('/admin', {
+                email: data.email,
+                password: data.password,
+                role: data.role,
+                allowedFeature: [
+                    data.allowedFeature
+                ],
+                details: {
+                    firstName: {
+                        en: data.details.firstName.en,
+                        ne: data.details.firstName.ne,
+                    },
+                    lastName: {
+                        en: data.details.lastName.en,
+                        ne: data.details.lastName.ne,
+                    },
+                    phoneNumber: data.details.phoneNumber
+
+                }
             })
             if (response.data.status) {
+                console.log(response);
                 toast.show({
                     title: 'Operation Successful',
-                    content: "Updated",
+                    content: "Admin created successfully",
                     duration: 5000,  // Duration in milliseconds,
                     type: 'success'
                 });
-
-                console.log(data)
-                try {
-                    const UpdatedUserData = userData.map(user =>
-                        user.id === id ? deepMerge({ ...user }, data) : user
-                    )
-                    setUserData(UpdatedUserData)
-                    closeDialog();
-                } catch (error) {
-                    console.log(error)
-                }
-
+                reset();
             }
+            console.log(response)
         } catch (error) {
+            console.log(error);
+            const errorMessage = error?.response?.data?.message || 'An unexpected error occurred';
             toast.show({
                 title: 'Operation Failed',
-                content: error?.response?.data?.message,
+                content: errorMessage,
                 duration: 5000,  // Duration in milliseconds,
                 type: 'error'
             });
         }
     }
 
-    useEffect(() => {
-        fetchAdmin();
-    }, []);
-
     return (
-        <div className='update-admin'>
-            <h1 className='underline-site-color' >Update Admin</h1>
-            <div className='update-admin-content'>
-                <form onSubmit={handleSubmit(updateAdmin)}>
+        <div className='create-admin'>
+            <h1 className='underline-site-color'>Create Account</h1>
+            <div className="create-admin-content">
+
+                <form onSubmit={handleSubmit(createAdmin)}>
                     <div className='name-field'>
                         <div>
                             <InputField
@@ -145,6 +107,7 @@ const UpdateAdmin: React.FC<UpdateAdminProps> = ({ id, closeDialog, userData, se
                                 name="details.lastName.en"
                                 register={register}
                                 options={{ required: "Last name is required" }}
+
                             />
                             {errors?.details?.lastName?.en?.message &&
                                 <span className='red-text'>
@@ -165,9 +128,11 @@ const UpdateAdmin: React.FC<UpdateAdminProps> = ({ id, closeDialog, userData, se
                                 options={{ required: "Phone number is required" }}
                             />
                             {errors?.details?.phoneNumber?.message &&
+
                                 <span className='red-text'>
                                     {errors?.details?.phoneNumber?.message}
                                 </span>}
+
                         </div>
 
                         <div>
@@ -176,13 +141,62 @@ const UpdateAdmin: React.FC<UpdateAdminProps> = ({ id, closeDialog, userData, se
                                 placeholder="ram.sharma@gmail.com"
                                 label="Enter your email address"
                                 name="email"
-                                readOnly={true}
                                 register={register}
                                 options={{ required: "Email address is required" }}
                             />
+
                             {errors?.email?.message &&
                                 <span className='red-text'>
                                     {errors?.email?.message}
+                                </span>}
+                        </div>
+                    </div>
+
+                    <div className='password'>
+                        <div>
+                            <InputField
+                                icon={<FaLock />}
+                                placeholder="************"
+                                label="Enter your password"
+                                type='password'
+                                name="password"
+                                register={register}
+                                options={{
+                                    required: "Password is required.",
+                                    minLength: {
+                                        value: 8,
+                                        message: "Minimum Length of 8 required."
+                                    }
+                                }}
+                            />
+                            {errors?.password?.message &&
+                                <span className='red-text'>
+                                    {errors?.password?.message}
+                                </span>}
+                        </div>
+
+                        <div>
+                            <InputField
+                                icon={<FaLock />}
+                                type='password'
+                                placeholder="************"
+                                label="Confirm your password"
+                                name="confirmPassword"
+                                register={register}
+                                options={{
+                                    required: "Confirm your password.",
+                                    minLength: {
+                                        value: 8,
+                                        message: "Minimum Length of 8 required."
+                                    },
+                                    validate: (value: string) =>
+                                        value === password || "The passwords do not match"
+                                }}
+
+                            />
+                            {errors?.confirmPassword?.message &&
+                                <span className='red-text'>
+                                    {errors?.confirmPassword?.message}
                                 </span>}
                         </div>
                     </div>
@@ -215,6 +229,7 @@ const UpdateAdmin: React.FC<UpdateAdminProps> = ({ id, closeDialog, userData, se
                                 ]}
                                 register={register}
                                 options={{ required: 'Allowed Feature is required' }}
+
                             />
                             {errors?.password?.message &&
                                 <span className='red-text'>
@@ -225,13 +240,15 @@ const UpdateAdmin: React.FC<UpdateAdminProps> = ({ id, closeDialog, userData, se
 
                     <div className='btn-container'>
                         <Button
-                            name="Update Admin"
+                            name="Create Admin"
                         />
                     </div>
+
                 </form>
             </div>
         </div>
-    );
+    )
 }
 
-export default UpdateAdmin;
+
+export default CreateAdmin

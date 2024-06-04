@@ -12,9 +12,18 @@
 .red-text {
   color: red;
   text-align: center;
+  /* margin-top: 80px; */
 }
 
 a {
   text-decoration: none;
   color: var(--secondary-color);
+}
+
+.site-color {
+  color: var(--site-color);
+}
+
+.underline-site-color {
+  border-bottom: 2px solid var(--site-color);
 }

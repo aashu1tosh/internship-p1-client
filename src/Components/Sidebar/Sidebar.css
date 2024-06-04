@@ -31,7 +31,10 @@
 }
 
 #unique-sidebar .sidebar-content li:hover {
-    background-color: #575757;
+    color: var(--site-color);
+    border-left: 5px solid var(--site-color);
+    padding-left: 7px;
+    transition: 0.25s ease-in;
 }
 
 .toggle-button {

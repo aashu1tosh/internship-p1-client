@@ -1,5 +1,5 @@
 import axios from '@services/instance';
-import { UserCreateInterface } from '@type/global.types';
+import { UpdateAdminProps, UserCreateInterface } from 'interface/global.interface';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaPhone, FaUser } from 'react-icons/fa';
@@ -9,7 +9,6 @@ import InputField from 'ui/atom/InputField/InputField';
 import SelectOption from 'ui/atom/SelectOption/SelectOption';
 import { toast } from 'ui/atom/Toast/ToastManager';
 import './UpdateAdmin.css';
-import { UpdateAdminProps } from 'interface/global.interface';
 
 
 
@@ -17,9 +16,9 @@ const UpdateAdmin: React.FC<UpdateAdminProps> = ({ id, closeDialog, userData, se
     const { register, handleSubmit, formState: { errors }, reset } = useForm<UserCreateInterface>();
     const fetchAdmin = async () => {
         try {
-            const response = await axios.get(`/admin/${id}`);
-            const fetchedData = response.data.data;
-
+            console.log(userData);
+            const fetchedData = userData.filter((user) => user?.id == id)[0];
+            console.log(fetchedData)
             reset({
                 email: fetchedData.email,
                 role: fetchedData.role,

@@ -5,19 +5,24 @@
     flex-direction: column;
 }
 
+.admin-details-container h1 {
+    padding: 2px;
+}
+
 .admin-details-container .admin-details {
     border: 2px solid var(--site-color);
     box-shadow: 0 0 24px var(--site-color);
     padding: 20px;
     border-radius: 10px;
     width: 500px;
-    margin-top: 20px;
-    margin-bottom: 20px;
+    margin-top: 40px;
+    margin-bottom: 40px;
     text-justify: distribute;
 }
 
 .admin-details-container .admin-details p {
     font-size: 18px;
+    margin-bottom: 8px;
 }
 
 .admin-details-container .admin-details div {

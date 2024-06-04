@@ -1,20 +1,25 @@
 import axios from '@services/instance';
-import { UserCreateInterface } from '@type/global.types';
+import { UserCreateInterface, UserInterface } from '@type/global.types';
+import { UserType } from 'interface/global.interface';
 import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { FaPhone, FaUser } from 'react-icons/fa';
 import { MdEmail } from 'react-icons/md';
-import { useNavigate, useParams } from 'react-router-dom';
 import Button from 'ui/atom/Buttons/Buttons';
 import InputField from 'ui/atom/InputField/InputField';
 import SelectOption from 'ui/atom/SelectOption/SelectOption';
 import { toast } from 'ui/atom/Toast/ToastManager';
 import './UpdateAdmin.css';
 
-const UpdateAdmin = () => {
-    const { id } = useParams();
+interface UpdateAdminProps {
+    id: string;
+    closeDialog: () => void;
+    userData: UserType;
+    setUserData: React.Dispatch<React.SetStateAction<UserInterface[]>>;
+}
+
+const UpdateAdmin: React.FC<UpdateAdminProps> = ({ id, closeDialog, userData, setUserData }) => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm<UserCreateInterface>();
-    const navigate = useNavigate();
     const fetchAdmin = async () => {
         try {
             const response = await axios.get(`/admin/${id}`);
@@ -37,16 +42,33 @@ const UpdateAdmin = () => {
                 }
             });
 
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             console.error(error);
             toast.show({
-                title: 'Operation Failed hehe',
+                title: 'Operation Failed',
                 content: error?.response.data.message,
                 duration: 5000,
                 type: 'error'
             });
         }
     }
+
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const deepMerge = (target: any, source: any): any => {
+        for (const key in source) {
+            if (source[key] && typeof source[key] === 'object') {
+                if (!target[key]) {
+                    target[key] = {};
+                }
+                deepMerge(target[key], source[key]);
+            } else {
+                target[key] = source[key];
+            }
+        }
+        return target;
+    };
+
 
     const updateAdmin = async (data: UserCreateInterface) => {
         // handle form submission
@@ -67,14 +89,24 @@ const UpdateAdmin = () => {
                 phoneNumber: data.details.phoneNumber
             })
             if (response.data.status) {
-                console.log(response);
                 toast.show({
                     title: 'Operation Successful',
                     content: "Updated",
                     duration: 5000,  // Duration in milliseconds,
                     type: 'success'
                 });
-                navigate('/admin/admin-list')
+
+                console.log(data)
+                try {
+                    const UpdatedUserData = userData.map(user =>
+                        user.id === id ? deepMerge({ ...user }, data) : user
+                    )
+                    setUserData(UpdatedUserData)
+                    closeDialog();
+                } catch (error) {
+                    console.log(error)
+                }
+
             }
         } catch (error) {
             toast.show({

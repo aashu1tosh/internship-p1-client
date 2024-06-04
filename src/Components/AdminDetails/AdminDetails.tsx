@@ -1,25 +1,16 @@
-import EncryptDecrypt from '@functions/EncryptDecrypt';
 import axios from '@services/instance';
 import { UserInterface } from '@type/global.types';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
-import Buttons from 'ui/atom/Buttons/Buttons';
 import { toast } from 'ui/atom/Toast/ToastManager';
 import './AdminDetails.css';
 
-const AdminDetails = () => {
-    const { id } = useParams();
+const AdminDetails = ({ id }: { id: string }) => {
+
     const [userData, setUserData] = useState<UserInterface>();
 
     const fetchData = async () => {
         try {
-            const response = await axios.get(`/admin/${id}`, {
-                headers: {
-                    Authorization: `Bearer ${EncryptDecrypt.decrypt(localStorage.getItem("accessToken") as string)}`
-                }
-            });
-            console.log(response);
-            console.log(response.data.data);
+            const response = await axios.get(`/admin/${id}`);
             setUserData(response.data.data);
             toast.show({
                 title: 'Operation Successful',
@@ -45,8 +36,8 @@ const AdminDetails = () => {
 
     return (
         <div className="admin-details-container">
-            <h1>Admin Details</h1>
-            <div className='admin-details'>
+            <h1 className='underline-site-color'>Admin Details</h1>
+            <div className='admin-details underline-site-color'>
                 <p>First Name: {userData?.details?.firstName?.en}</p>
                 <p>Middle Name: {userData?.details?.middleName?.en ?? 'n/a'}</p>
                 <p>Last Name: {userData?.details?.lastName?.en}</p>
@@ -58,7 +49,6 @@ const AdminDetails = () => {
                 <p>Created At: {userData?.createdAt ?? 'false'}</p>
                 <p></p>
             </div>
-            <Buttons name='Edit Admin' />
         </div>
     )
 }

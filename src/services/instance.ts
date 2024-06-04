@@ -7,4 +7,11 @@ const instance: AxiosInstance = axios.create({
     timeout: import.meta.env.VITE_APP_TIME_OUT,
 })
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+instance.interceptors.request.use(async (config: any) => {
+
+    config.headers.Authorization = `Bearer ${EncryptDecrypt.decrypt(localStorage.getItem("accessToken") as string)}`
+    return config
+})
+
 export default instance

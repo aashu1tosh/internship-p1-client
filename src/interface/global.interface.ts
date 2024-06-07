@@ -4,6 +4,10 @@ export interface UserInterface {
             en: string,
             ne: string
         },
+        middleName?: {
+            en: string,
+            ne: string
+        },
         lastName: {
             en: string,
             ne: string,
@@ -40,7 +44,7 @@ export interface UserCreateInterface {
             en: string,
             ne: string
         },
-        phoneNumber: ""
+        phoneNumber: number
     }
 }
 
@@ -55,7 +59,7 @@ export interface UserInterface {
             en: string,
             ne: string,
         },
-        middleName: {
+        middleName?: {
             en: string,
             ne: string
         },
@@ -63,7 +67,7 @@ export interface UserInterface {
             en: string,
             ne: string
         },
-        phoneNumber: ""
+        phoneNumber: number,
     },
     otpVerified: boolean,
     username: string,

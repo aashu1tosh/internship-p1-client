@@ -1,5 +1,5 @@
 import axios from '@services/instance';
-import { UserInterface } from '@type/global.types';
+import { UserInterface } from 'interface/global.interface';
 import { useEffect, useState } from 'react';
 import { toast } from 'ui/atom/Toast/ToastManager';
 import './AdminDetails.css';

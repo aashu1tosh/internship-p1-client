@@ -8,8 +8,10 @@ interface InputFieldProps {
   name: string;
   label?: string;
   type?: string;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   register: UseFormRegister<any>;
-  options: any;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  options?: any;
   readOnly?: boolean;
 
 }

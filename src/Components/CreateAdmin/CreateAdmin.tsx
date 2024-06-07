@@ -1,5 +1,6 @@
 import axios from '@services/instance'
-import { UserCreateInterface } from '@type/global.types'
+// import { UserCreateInterface } from '@type/global.types'
+import { UserCreateInterface } from 'interface/global.interface'
 import { useForm } from 'react-hook-form'
 import { FaLock, FaPhone, FaUser } from 'react-icons/fa'
 import { MdEmail } from 'react-icons/md'
@@ -124,7 +125,7 @@ const CreateAdmin = () => {
                                 label="Enter your phone number"
                                 name="details.phoneNumber"
                                 register={register}
-                                type='number'
+                                type='tel'
                                 options={{ required: "Phone number is required" }}
                             />
                             {errors?.details?.phoneNumber?.message &&

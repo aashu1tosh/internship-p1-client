@@ -12,30 +12,28 @@ import './UpdateAdmin.css';
 
 
 
-const UpdateAdmin: React.FC<UpdateAdminProps> = ({ id, closeDialog, userData, setUserData }) => {
+const UpdateAdmin: React.FC<UpdateAdminProps> = ({ id, user, closeDialog, handleUserUpdate }) => {
     const { register, handleSubmit, formState: { errors }, reset } = useForm<UserCreateInterface>();
-    const fetchAdmin = async () => {
+    const fetchAdmin = () => {
         try {
-            console.log(userData);
-            const fetchedData = userData.filter((user) => user?.id == id)[0];
-            console.log(fetchedData)
+            const fetchedData = user;
+            console.log(fetchedData, "fetchedData")
             reset({
-                email: fetchedData.email,
-                role: fetchedData.role,
-                allowedFeature: fetchedData.allowedFeature,
+                email: fetchedData?.email,
+                role: fetchedData?.role,
+                allowedFeature: fetchedData?.allowedFeature,
                 details: {
                     firstName: {
-                        en: fetchedData.details.firstName.en,
-                        ne: fetchedData.details.firstName.ne,
+                        en: fetchedData?.details.firstName.en,
+                        ne: fetchedData?.details.firstName.ne,
                     },
                     lastName: {
-                        en: fetchedData.details.lastName.en,
-                        ne: fetchedData.details.lastName.ne
+                        en: fetchedData?.details.lastName.en,
+                        ne: fetchedData?.details.lastName.ne
                     },
-                    phoneNumber: fetchedData.details.phoneNumber
+                    phoneNumber: fetchedData?.details.phoneNumber
                 }
             });
-
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
             console.error(error);
@@ -47,8 +45,7 @@ const UpdateAdmin: React.FC<UpdateAdminProps> = ({ id, closeDialog, userData, se
             });
         }
     }
-
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
     const deepMerge = (target: any, source: any): any => {
         for (const key in source) {
             if (source[key] && typeof source[key] === 'object') {
@@ -67,8 +64,9 @@ const UpdateAdmin: React.FC<UpdateAdminProps> = ({ id, closeDialog, userData, se
     const updateAdmin = async (data: UserCreateInterface) => {
         // handle form submission
         console.log(data);
+        console.log(typeof (data))
         try {
-            const response = await axios.patch('/admin', {
+            await axios.patch('/admin', {
                 id: id,
                 role: data.role,
                 allowedFeature: data.allowedFeature,
@@ -82,26 +80,22 @@ const UpdateAdmin: React.FC<UpdateAdminProps> = ({ id, closeDialog, userData, se
                 },
                 phoneNumber: data.details.phoneNumber
             })
-            if (response.data.status) {
-                toast.show({
-                    title: 'Operation Successful',
-                    content: "Updated",
-                    duration: 5000,  // Duration in milliseconds,
-                    type: 'success'
-                });
 
-                console.log(data)
-                try {
-                    const UpdatedUserData = userData.map(user =>
-                        user.id === id ? deepMerge({ ...user }, data) : user
-                    )
-                    setUserData(UpdatedUserData)
-                    closeDialog();
-                } catch (error) {
-                    console.log(error)
-                }
-
+            toast.show({
+                title: 'Operation Successful',
+                content: "Updated",
+                duration: 5000,  // Duration in milliseconds,
+                type: 'success'
+            });
+            try {
+                const UpdatedUserData = deepMerge(user, data);
+                // setSpecificUser(UpdatedUserData);
+                handleUserUpdate(UpdatedUserData);
+                closeDialog();
+            } catch (error) {
+                console.log(error)
             }
+
         } catch (error) {
             toast.show({
                 title: 'Operation Failed',
@@ -160,7 +154,7 @@ const UpdateAdmin: React.FC<UpdateAdminProps> = ({ id, closeDialog, userData, se
                                 label="Enter your phone number"
                                 name="details.phoneNumber"
                                 register={register}
-                                type='number'
+                                type='tel'
                                 options={{ required: "Phone number is required" }}
                             />
                             {errors?.details?.phoneNumber?.message &&

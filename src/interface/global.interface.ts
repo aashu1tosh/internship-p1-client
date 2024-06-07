@@ -12,7 +12,7 @@ export interface UserInterface {
             en: string,
             ne: string,
         },
-        phoneNumber: number
+        phoneNumber: string
     }
     email: string,
     id: string,
@@ -22,11 +22,25 @@ export interface UserInterface {
 
 export type UserType = UserInterface[]
 
+export interface PaginationInterface {
+    currentPage: number,
+    perPage: number,
+    total: number,
+    totalPages: number
+}
+
+export const defaultPagination: PaginationInterface = {
+    currentPage: 1,
+    perPage: 10,
+    totalPages: 1,
+    total: 10
+};
+
 export interface UpdateAdminProps {
     id: string;
     closeDialog: () => void;
-    userData: UserType;
-    setUserData: React.Dispatch<React.SetStateAction<UserInterface[]>>;
+    user: UserInterface | undefined;
+    handleUserUpdate: (updatedUser: UserInterface) => void;
 }
 
 export interface UserCreateInterface {
@@ -44,8 +58,11 @@ export interface UserCreateInterface {
             en: string,
             ne: string
         },
-        phoneNumber: number
+        phoneNumber: string
     }
+}
+export interface SearchObject {
+    search: string;
 }
 
 export interface UserInterface {
@@ -67,7 +84,7 @@ export interface UserInterface {
             en: string,
             ne: string
         },
-        phoneNumber: number,
+        phoneNumber: string,
     },
     otpVerified: boolean,
     username: string,

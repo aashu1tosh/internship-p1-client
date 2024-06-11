@@ -17,7 +17,7 @@ interface FormData {
 
 
 const Signin = () => {
-    const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
+    const { register, handleSubmit, formState: { isSubmitting, errors } } = useForm<FormData>();
     const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState<boolean>(false);
     const [rememberMe, setRememberMe] = useState<boolean>(false);
@@ -38,6 +38,10 @@ const Signin = () => {
                     localStorage.setItem("accessToken", token as string);
                 else
                     sessionStorage.setItem("accessToken", token as string);
+
+                localStorage.setItem("role", response?.data?.data?.admin?.role.replace('_', " ").toLowerCase());
+                localStorage.setItem("username", response?.data?.data?.admin?.username)
+
                 toast.show({
                     title: 'Success',
                     content: 'You have successfully Logged in!',
@@ -113,7 +117,7 @@ const Signin = () => {
                         </div>
 
                         <div className="button">
-                            <button className='signin-button' type='submit'>Sign In</button>
+                            <button className='signin-button' type='submit' disabled={isSubmitting}>Sign In</button>
                         </div>
 
                     </form>

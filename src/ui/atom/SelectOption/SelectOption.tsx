@@ -1,4 +1,4 @@
-import { UseFormRegister } from 'react-hook-form';
+import { FieldError, UseFormRegister } from 'react-hook-form';
 import './SelectOption.css';
 
 interface OptionInterface {
@@ -11,14 +11,15 @@ interface SelectOptionProps {
     option?: OptionInterface[];
     register: UseFormRegister<any>;
     options: any;
+    error?: FieldError;
 }
 
-const SelectOption: React.FC<SelectOptionProps> = ({ label = "", name, option, register, options = {} }) => {
+const SelectOption: React.FC<SelectOptionProps> = ({ label = "", name, option, register, options = {}, error }) => {
     return (
         <div className='select-option'>
             <label htmlFor={name}>{label}<span className='red-text'>{options?.required ? "*" : ""}</span></label>
 
-            <select id={name} {...register(name, options)} >
+            <select id={name} {...register(name, options)} className={error ? 'input-error' : ''} >
                 <option value="" disabled selected hidden>Please Choose...</option>
                 {
                     option && option.map((data, index) => (

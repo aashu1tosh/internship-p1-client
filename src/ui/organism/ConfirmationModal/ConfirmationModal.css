@@ -1,5 +1,12 @@
+.modal-content {
+    display: flex;
+    flex-direction: column;
+
+}
+
 .modal-content p {
-    margin-bottom: 20px;
+    font-size: 24px;
+    margin-bottom: 30px;
 }
 
 .modal-content button {
@@ -9,7 +16,9 @@
     margin-right: 15px;
     cursor: pointer;
     border-radius: 4px;
+    font-size: 18px;
 }
+
 
 .modal-content>div {
     display: flex;

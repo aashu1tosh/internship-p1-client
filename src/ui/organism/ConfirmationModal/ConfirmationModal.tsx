@@ -15,7 +15,9 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({ isOpen, onCancel,
             <div className='backdrop' onClick={onCancel}></div>
             <div className="modal center-dialog">
                 <div className="modal-content">
-                    <p>Are you sure about your actions?</p>
+                    <div>
+                        <p>Are you sure about your actions?</p>
+                    </div>
                     <div>
                         <button onClick={onCancel} className='error'>Cancel</button>
                         <button onClick={onConfirm} className='success'>Confirm</button>

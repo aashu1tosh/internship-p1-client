@@ -13,6 +13,8 @@
     align-items: center;
     border: 2px solid var(--site-color);
     border-radius: 9px;
+    float: inline-end;
+    width: 100%;
 }
 
 .admin-home .admin-create h3 {

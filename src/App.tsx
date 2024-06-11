@@ -3,12 +3,9 @@ import Home from 'Components/Home/Home'
 import Signin from 'Components/Signin/Signin'
 import './App.css'
 
-import AdminDetails from 'Components/AdminDetails/AdminDetails'
-import AdminHome from 'Components/AdminHome/AdminHome'
 import AdminList from 'Components/AdminList/AdminList'
 import ChangePassword from 'Components/ChangePassword/ChangePassword'
 import CreateAdmin from 'Components/CreateAdmin/CreateAdmin'
-import UpdateAdmin from 'Components/UpdateAdmin/UpdateAdmin'
 import React from 'react'
 import {
   createBrowserRouter,
@@ -39,16 +36,12 @@ function App() {
       children: [
         {
           path: "",
-          element: <AdminHome />,
+          element: <AdminDashboard />,
           index: true
         },
         {
           path: 'create-admin',
           element: <CreateAdmin />
-        },
-        {
-          path: "dashboard",
-          element: <AdminDashboard />,
         },
         {
           path: 'change-password',
@@ -59,12 +52,8 @@ function App() {
           element: <AdminList />
         },
         {
-          path: ':id',
-          element: <AdminDetails />
-        },
-        {
-          path: 'update-admin/:id',
-          element: <UpdateAdmin />
+          path: '*',
+          element: <><div style={{ display: 'flex', justifyContent: 'center', alignContent: 'center', fontSize: '34px' }}>Page Not Found</div></>
         }
       ]
     }

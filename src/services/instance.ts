@@ -9,8 +9,9 @@ const instance: AxiosInstance = axios.create({
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 instance.interceptors.request.use(async (config: any) => {
-
-    config.headers.Authorization = `Bearer ${EncryptDecrypt.decrypt(localStorage.getItem("accessToken") as string)}`
+    const token = EncryptDecrypt.decrypt(localStorage.getItem("accessToken") as string) ||
+        EncryptDecrypt.decrypt(sessionStorage.getItem("accessToken") as string);
+    config.headers.Authorization = `Bearer ${token}`
     return config
 })
 

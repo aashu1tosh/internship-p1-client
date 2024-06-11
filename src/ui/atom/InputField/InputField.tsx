@@ -17,9 +17,10 @@ interface InputFieldProps {
 }
 
 const InputField: React.FC<InputFieldProps> = ({ icon, placeholder, name, label, type = "text", register, options = {}, readOnly = false }) => {
+
   return (
     <div className="input-field">
-      {label && <label className="input-label">{label}</label>}
+      {label && <label className="input-label">{label} <span className='red-text'>{options?.required ? "*" : ""}</span></label>}
       <div className="input-wrapper">
         {icon && <span className="input-icon">{icon}</span>}
         <input
@@ -34,4 +35,6 @@ const InputField: React.FC<InputFieldProps> = ({ icon, placeholder, name, label,
   );
 };
 
-export default InputField;
+export default InputField
+
+

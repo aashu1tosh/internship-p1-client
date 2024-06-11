@@ -14,7 +14,7 @@ const Dialog: React.FC<DialogProps> = ({ open, onClose, children }) => {
         <>
             <div className="backdrop" onClick={onClose}></div>
             <dialog open className="center-dialog">
-                <FaWindowClose onClick={onClose} size={25} style={{ float: "right" }} /><br />
+                <FaWindowClose onClick={onClose} size={25} style={{ float: "right", color: "red", cursor: "pointer" }} /><br />
                 {children}
             </dialog>
         </>

@@ -24,14 +24,14 @@ export type UserType = UserInterface[]
 
 export interface PaginationInterface {
     currentPage: number,
-    perPage: number,
+    perpage: number,
     total: number,
     totalPages: number
 }
 
 export const defaultPagination: PaginationInterface = {
     currentPage: 1,
-    perPage: 10,
+    perpage: 10,
     totalPages: 1,
     total: 10
 };
@@ -51,6 +51,10 @@ export interface UserCreateInterface {
     allowedFeature: [],
     details: {
         firstName: {
+            en: string,
+            ne: string,
+        },
+        middleName: {
             en: string,
             ne: string,
         },

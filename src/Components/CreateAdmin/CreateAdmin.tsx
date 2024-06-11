@@ -1,10 +1,10 @@
 import axios from '@services/instance'
-// import { UserCreateInterface } from '@type/global.types'
 import { UserCreateInterface } from 'interface/global.interface'
 import { useForm } from 'react-hook-form'
 import { FaLock, FaPhone, FaUser } from 'react-icons/fa'
 import { MdEmail } from 'react-icons/md'
 import Button from 'ui/atom/Buttons/Buttons'
+import CheckboxGroup from 'ui/atom/CheckboxGroup/CheckboxGroup'
 import InputField from 'ui/atom/InputField/InputField'
 import SelectOption from 'ui/atom/SelectOption/SelectOption'
 import { toast } from 'ui/atom/Toast/ToastManager'
@@ -22,6 +22,10 @@ const CreateAdmin = () => {
                     en: "",
                     ne: "",
                 },
+                middleName: {
+                    en: "",
+                    ne: "",
+                },
                 lastName: {
                     en: '',
                     ne: ""
@@ -35,14 +39,11 @@ const CreateAdmin = () => {
 
     const createAdmin = async (data: UserCreateInterface) => {
         try {
-            console.log("create admin called");
             const response = await axios.post('/admin', {
                 email: data.email,
                 password: data.password,
                 role: data.role,
-                allowedFeature: [
-                    data.allowedFeature
-                ],
+                allowedFeature: data.allowedFeature,
                 details: {
                     firstName: {
                         en: data.details.firstName.en,
@@ -57,7 +58,6 @@ const CreateAdmin = () => {
                 }
             })
             if (response.data.status) {
-                console.log(response);
                 toast.show({
                     title: 'Operation Successful',
                     content: "Admin created successfully",
@@ -66,9 +66,7 @@ const CreateAdmin = () => {
                 });
                 reset();
             }
-            console.log(response)
         } catch (error) {
-            console.log(error);
             const errorMessage = error?.response?.data?.message || 'An unexpected error occurred';
             toast.show({
                 title: 'Operation Failed',
@@ -103,21 +101,76 @@ const CreateAdmin = () => {
                         <div>
                             <InputField
                                 icon={<FaUser />}
+                                placeholder="राम"
+                                label="आफ्नो पहिलो नाम प्रविष्ट गर्नुहोस्"
+                                name="details.firstName.ne"
+                                register={register}
+                            />
+                            {errors?.details?.firstName?.ne?.message &&
+                                <span className='red-text'>
+                                    {errors?.details?.firstName?.ne?.message}
+                                </span>}
+                        </div>
+
+                        <div>
+                            <InputField
+                                icon={<FaUser />}
+                                placeholder="Bahadur"
+                                label="Enter your middle name"
+                                name="details.middleName.en"
+                                register={register}
+                            />
+                            {errors?.details?.middleName?.en?.message &&
+                                <span className='red-text'>
+                                    {errors?.details?.middleName?.en?.message}
+                                </span>}
+                        </div>
+                        <div>
+                            <InputField
+                                icon={<FaUser />}
+                                placeholder="बहादुर"
+                                label="आफ्नो बीचको नाम प्रविष्ट गर्नुहोस्"
+                                name="details.middleName.ne"
+                                register={register}
+                            />
+                            {errors?.details?.middleName?.en?.message &&
+                                <span className='red-text'>
+                                    {errors?.details?.middleName?.en?.message}
+                                </span>}
+                        </div>
+                    </div>
+
+                    <div className='name-field'>
+                        <div>
+                            <InputField
+                                icon={<FaUser />}
                                 placeholder="Sharma"
                                 label="Enter your last name"
                                 name="details.lastName.en"
                                 register={register}
                                 options={{ required: "Last name is required" }}
-
                             />
                             {errors?.details?.lastName?.en?.message &&
                                 <span className='red-text'>
                                     {errors?.details?.lastName?.en?.message}
                                 </span>}
                         </div>
-                    </div>
+                        <div>
+                            <InputField
+                                icon={<FaUser />}
+                                placeholder="शर्मा"
+                                label="आफ्नो थर प्रविष्ट गर्नुहोस्"
+                                name="details.lastName.ne"
+                                register={register}
+                            />
+                            {errors?.details?.lastName?.ne?.message &&
+                                <span className='red-text'>
+                                    {errors?.details?.lastName?.ne?.message}
+                                </span>}
+                        </div>
+                        {/* </div> */}
 
-                    <div className='email-phone'>
+                        {/* <div className='email-phone'> */}
                         <div>
                             <InputField
                                 icon={<FaPhone style={{ rotate: '90deg' }} />}
@@ -200,11 +253,11 @@ const CreateAdmin = () => {
                                     {errors?.confirmPassword?.message}
                                 </span>}
                         </div>
-                    </div>
-                    <div className='selectors'>
+                        {/* </div>
+                    <div className='selectors'> */}
                         <div>
                             <SelectOption
-                                label='Select Role:'
+                                label='Select Role '
                                 name='role'
                                 option={[
                                     { label: 'User', value: 'USER' },
@@ -214,28 +267,29 @@ const CreateAdmin = () => {
                                 register={register}
                                 options={{ required: 'Role is required' }}
                             />
-                            {errors?.password?.message &&
+                            {errors?.role?.message &&
                                 <span className='red-text'>
                                     {errors?.role?.message}
                                 </span>}
                         </div>
 
                         <div>
-                            <SelectOption
-                                label='Allowed Feature:'
+                            <CheckboxGroup
+                                label='Allowed Feature'
                                 name='allowedFeature'
-                                option={[
+                                options={[
                                     { label: 'Setup', value: 'SETUP' },
-                                    { label: 'Manage Admin', value: 'MANAGE_ADMIN' },
+                                    { label: 'Manage Admin', value: 'MANAGE_ADMIN' }
                                 ]}
                                 register={register}
-                                options={{ required: 'Allowed Feature is required' }}
-
+                                validationOptions={{ required: 'At least one feature must be selected' }}
                             />
-                            {errors?.password?.message &&
+
+                            {errors.allowedFeature && (
                                 <span className='red-text'>
-                                    {errors?.allowedFeature?.message}
-                                </span>}
+                                    {errors.allowedFeature.message}
+                                </span>
+                            )}
                         </div>
                     </div>
 

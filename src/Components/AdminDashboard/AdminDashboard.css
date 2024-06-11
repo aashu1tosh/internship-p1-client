@@ -1,5 +1,5 @@
-.admin-dashboard {
-    
+.admin-dashboard #reports {
+    margin-top: 20px;
 }
 
 .admin-dashboard .reports {
@@ -9,7 +9,7 @@
     margin: 10px;
 }
 
-.admin-dashboard .report {
+.admin-dashboard .reports .report {
     display: flex;
     border: 1px solid var(--site-color);
     padding: 10px 80px 10px 10px;

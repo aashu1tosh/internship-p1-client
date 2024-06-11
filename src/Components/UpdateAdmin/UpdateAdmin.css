@@ -53,3 +53,8 @@
     justify-content: center;
     margin-top: 10px;
 }
+
+.update-admin .update-admin-email-field input:read-only {
+    cursor: not-allowed;
+}
+

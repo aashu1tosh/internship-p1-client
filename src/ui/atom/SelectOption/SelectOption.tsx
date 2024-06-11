@@ -13,12 +13,13 @@ interface SelectOptionProps {
     options: any;
 }
 
-const SelectOption: React.FC<SelectOptionProps> = ({ label, name, option, register, options = {} }) => {
+const SelectOption: React.FC<SelectOptionProps> = ({ label = "", name, option, register, options = {} }) => {
     return (
         <div className='select-option'>
-            <label htmlFor={name}>{label}</label>
+            <label htmlFor={name}>{label}<span className='red-text'>{options?.required ? "*" : ""}</span></label>
 
             <select id={name} {...register(name, options)} >
+                <option value="" disabled selected hidden>Please Choose...</option>
                 {
                     option && option.map((data, index) => (
                         <option value={data?.value} key={index}>{data?.label}</option>

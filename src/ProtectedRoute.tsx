@@ -3,7 +3,9 @@ import AdminTemplate from 'Components/AdminTemplate/AdminTemplate';
 import { Navigate } from 'react-router-dom';
 
 const ProtectedRoute = () => {
-    if (EncryptDecrypt.decrypt(localStorage.getItem('accessToken') as string)) {
+    const token = EncryptDecrypt.decrypt(localStorage.getItem('accessToken') as string) ||
+        EncryptDecrypt.decrypt(sessionStorage.getItem('accessToken') as string);
+    if (token) {
         return <AdminTemplate />;
     } else
 

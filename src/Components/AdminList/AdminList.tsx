@@ -1,3 +1,4 @@
+import { debounce } from '@functions/Debounce'
 import axios from '@services/instance'
 import AdminDetails from 'Components/AdminDetails/AdminDetails'
 import Pagination from 'Components/Pagination/Pagination'
@@ -10,6 +11,7 @@ import { MdDelete } from 'react-icons/md'
 import { TbCaretUpDownFilled } from 'react-icons/tb'
 import InputField from 'ui/atom/InputField/InputField'
 import { toast } from 'ui/atom/Toast/ToastManager'
+import ConfirmationModal from 'ui/organism/ConfirmationModal/ConfiramtionModal'
 import Dialog from 'ui/organism/Modal/Modal'
 import './AdminList.css'
 
@@ -27,8 +29,10 @@ const AdminList = () => {
 
     const [specificUser, setSpecificUser] = useState<UserInterface>();
 
-    const [totalPages, setTotalPages] = useState<PaginationInterface | undefined>();
+    const [totalPages, setTotalPages] = useState<PaginationInterface>(defaultPagination);
     const [refresh, setRefresh] = useState<boolean>(false);
+
+    const [showConfirmation, setShowConfirmation] = useState(false);
 
     const closeViewDialog = () => {
         setViewDialogOpen(false);
@@ -36,13 +40,16 @@ const AdminList = () => {
 
     const fetchData = async () => {
         try {
-            const response = await axios.get(`/admin?search=${search}&page=${totalPages?.currentPage || 1}`);
-            console.log(response.data.data.data);
-            setUserData(response.data.data.data);
-            console.log(response.data.data.pagination)
-            if (response.data.data.pagination.totalPages > 1) {
-                console.log("Show more pages")
+            const response = await axios.get(`/admin?search=${search}&page=${totalPages?.currentPage || 1}&perpage=${totalPages?.perpage}`);
+            if (!response.data.data.data.length) {
+                toast.show({
+                    title: 'Failed',
+                    content: "No data found",
+                    duration: 1000,  // Duration in milliseconds,
+                    type: 'error'
+                });
             }
+            setUserData(response.data.data.data);
             setTotalPages(response.data.data.pagination);
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
@@ -56,10 +63,26 @@ const AdminList = () => {
         }
     }
 
+    const confirmDelete = (_id: string) => {
+        setId(_id);
+        setShowConfirmation(true);
+    };
+
+    const handleDeleteConfirmed = () => {
+        // Execute delete action here using userIdToDelete
+        setShowConfirmation(false);
+        deleteUser(id);
+    };
+
+    const handleCancel = () => {
+        setShowConfirmation(false);
+        setId("");
+    };
+
     const deleteUser = async (_id: string) => {
+
         try {
             const response = await axios.delete(`/admin/${_id}`)
-            console.log(response)
             if (response?.data.status) {
                 toast.show({
                     title: 'Success',
@@ -72,7 +95,6 @@ const AdminList = () => {
             }
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (error: any) {
-            console.log(error);
             toast.show({
                 title: 'Operation Failed',
                 content: error?.response.data.message,
@@ -96,8 +118,6 @@ const AdminList = () => {
         setSpecificUser(user);
         setDialogOpen(true);
     }
-
-
 
     // Function to handle closing the dialog
     const closeDialog = () => {
@@ -133,7 +153,6 @@ const AdminList = () => {
 
     const searchFn = (data: SearchObject) => {
         try {
-            console.log(data)
             setSearch(data.search);
             setRefresh(prev => !prev)
         } catch (error) {
@@ -143,8 +162,14 @@ const AdminList = () => {
 
     return (
         <>
+
+            <div className='heading'>
+                <span>
+                    <h1 className='underline-site-color'>Admin List</h1>
+                </span>
+            </div>
             <div className='search-box'>
-                <form onSubmit={handleSubmit(searchFn)}>
+                <form onChange={debounce(handleSubmit(searchFn), 500)}>
                     <InputField
                         icon={<FaSearch />}
                         placeholder="Search Here"
@@ -181,7 +206,7 @@ const AdminList = () => {
                     <tbody>
                         {userData && userData?.map((user, index) => (
                             <tr key={index} onClick={() => handleRowClick(user?.id)}>
-                                <td>{index + 1}</td>
+                                <td>{(totalPages?.currentPage * 10 - 10) + index + 1}</td>
                                 <td>{user?.details.firstName.en}</td>
                                 <td>{user?.details.lastName.en}</td>
                                 <td>{user?.details.phoneNumber}</td>
@@ -190,7 +215,7 @@ const AdminList = () => {
                                 <td>{user?.username}</td>
                                 {/* <Link to={`/admin/update-admin/${user?.id}`}> </Link>*/}
                                 <td title='Update' onClick={(e) => { e.stopPropagation(); updateAdminClick(user?.id, user) }}>  <FaEdit size={16} color='green' cursor={'pointer'} /></td>
-                                <td onClick={(e) => { e.stopPropagation(); deleteUser(user?.id); }}><MdDelete size={21} color='red' /></td>
+                                <td onClick={(e) => { e.stopPropagation(); confirmDelete(user?.id); }}><MdDelete size={21} color='red' /></td>
                             </tr>
                         ))
                         }
@@ -212,15 +237,19 @@ const AdminList = () => {
                 </Dialog>
 
                 <Dialog open={dialogOpen} onClose={closeDialog}>
-
                     <UpdateAdmin
                         id={id}
                         closeDialog={closeDialog}
                         user={specificUser}
                         handleUserUpdate={handleUserUpdate}
                     />
-
                 </Dialog>
+
+                <ConfirmationModal
+                    isOpen={showConfirmation}
+                    onCancel={handleCancel}
+                    onConfirm={handleDeleteConfirmed}
+                />
 
             </div >
         </>

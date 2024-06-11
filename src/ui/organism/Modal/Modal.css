@@ -16,12 +16,11 @@
     transform: translate(-50%, -50%);
     background-color: var(--primary-color);
     color: var(--secondary-color);
-    border-radius: 16px;
+    border-radius: 8px;
     padding: 20px;
     border: 1px solid var(--site-color);
-    /* box-shadow: 0 0 24px var(--site-color); */
+    width: max-content;
     height: max-content;
-    width: 70vh;
 }
 
 .center-dialog-content {

@@ -8,14 +8,17 @@
 .select-option label {
     display: flex;
     align-items: center;
+    font-weight: 700;
 }
 
 .select-option select {
     margin-top: 5px;
-    border: 0;
+    border: 1px solid var(--site-color);
     outline: 0;
     border-radius: 4px;
-    /* font-size: 18px; */
-    padding: 10px 20px;
-    background-color: var(--site-color);
+    width: 220px;
+    padding: 10px 10px 10px 5px;
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
+
 }

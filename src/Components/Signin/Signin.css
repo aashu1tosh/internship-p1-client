@@ -8,6 +8,7 @@
     border-radius: 15px;
     border: 2px solid grey;
     background-color: var(--primary-color);
+    color: var(--secondary-color);
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -19,6 +20,7 @@
 .signin .signin-welcome p {
     font-size: 24px;
     text-align: center;
+
 }
 
 .signin img {
@@ -74,4 +76,15 @@
 
 input:-internal-autofill-selected {
     background-color: white !important;
+}
+
+.remember {
+    margin-left: 15px;
+    background: transparent;
+    color: var(--secondary-color);
+}
+
+.signin-end {
+    background-color: var(--primary-color);
+    color: var(--secondary-color);
 }

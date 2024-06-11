@@ -17,9 +17,11 @@ interface FormData {
 
 
 const Signin = () => {
-    const navigate = useNavigate();
     const { register, handleSubmit, formState: { errors } } = useForm<FormData>();
+    const navigate = useNavigate();
     const [showPassword, setShowPassword] = useState<boolean>(false);
+    const [rememberMe, setRememberMe] = useState<boolean>(false);
+
 
     const togglePasswordVisibility = () => {
         setShowPassword(prev => !prev);
@@ -31,17 +33,17 @@ const Signin = () => {
             password: data.password
         })
             .then((response: AxiosResponse) => {
-                console.log(response.data.data);
                 const token = EncryptDecrypt.encrypt(response.data.data.tokens.accessToken);
-                localStorage.setItem("decryptedToken", response.data.data.tokens.accessToken);
-                localStorage.setItem("accessToken", token as string);
+                if (rememberMe)
+                    localStorage.setItem("accessToken", token as string);
+                else
+                    sessionStorage.setItem("accessToken", token as string);
                 toast.show({
                     title: 'Success',
                     content: 'You have successfully Logged in!',
                     duration: 5000,  // Duration in milliseconds,
                     type: 'success'
                 });
-                // navigate(-1);
                 navigate('/admin', { replace: true });
             })
             .catch((error: AxiosError) => {
@@ -54,6 +56,11 @@ const Signin = () => {
                 console.error('Error fetching data:', error);
             });
     }
+
+
+    const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setRememberMe(event.target.checked);
+    };
 
     return (
         <>
@@ -94,15 +101,27 @@ const Signin = () => {
 
                         {errors.password && <div className='red-text'>{errors.password.message}</div>}
 
+                        <div className='remember'>
+                            <label htmlFor="remember-me"> Remember Me: </label>
+                            <input
+                                type="checkbox"
+                                id="remember-me"
+                                name="rememberMe"
+                                checked={rememberMe}
+                                onChange={handleCheckboxChange}
+                            />
+                        </div>
+
                         <div className="button">
                             <button className='signin-button' type='submit'>Sign In</button>
                         </div>
+
                     </form>
                 </div>
 
-                <div>
-                    <p>Forget Password?</p>
+                <div className='signin-end'>
                     <p>Don't have an account <span className='blue-text'>Sign up</span></p>
+                    <p style={{ textAlign: 'center' }}>Forget Password?</p>
                 </div>
             </div>
         </>

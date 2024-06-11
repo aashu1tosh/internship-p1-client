@@ -33,7 +33,6 @@ const ChangePassword = () => {
           newPassword: data?.newPassword
         }
       })
-      console.log(response);
       toast.show({
         title: 'Operation Successful',
         content: response?.data?.message,
@@ -43,8 +42,6 @@ const ChangePassword = () => {
       localStorage.removeItem("accessToken")
       navigate('/signin')
     } catch (error) {
-
-      console.log(error);
       toast.show({
         title: 'Operation Failed',
         content: error?.response?.data?.message,

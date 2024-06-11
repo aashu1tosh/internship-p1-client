@@ -27,4 +27,5 @@
 .trusted-by .companies .img-container img {
     width: 100px;
     height: auto;
+    color: var(--secondary-color);
 }

@@ -7,11 +7,12 @@ import { PaginationInterface, SearchObject, UserInterface, UserType, defaultPagi
 import { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { FaCaretDown, FaCaretUp, FaEdit, FaSearch } from 'react-icons/fa'
-import { MdDelete } from 'react-icons/md'
+import { MdDelete, MdOutlineAdminPanelSettings } from 'react-icons/md'
 import { TbCaretUpDownFilled } from 'react-icons/tb'
+import { Link } from 'react-router-dom'
 import InputField from 'ui/atom/InputField/InputField'
 import { toast } from 'ui/atom/Toast/ToastManager'
-import ConfirmationModal from 'ui/organism/ConfirmationModal/ConfiramtionModal'
+import ConfirmationModal from 'ui/organism/ConfirmationModal/ConfirmationModal'
 import Dialog from 'ui/organism/Modal/Modal'
 import './AdminList.css'
 
@@ -69,7 +70,6 @@ const AdminList = () => {
     };
 
     const handleDeleteConfirmed = () => {
-        // Execute delete action here using userIdToDelete
         setShowConfirmation(false);
         deleteUser(id);
     };
@@ -151,6 +151,7 @@ const AdminList = () => {
         closeDialog();
     };
 
+
     const searchFn = (data: SearchObject) => {
         try {
             setSearch(data.search);
@@ -168,17 +169,28 @@ const AdminList = () => {
                     <h1 className='underline-site-color'>Admin List</h1>
                 </span>
             </div>
-            <div className='search-box'>
-                <form onChange={debounce(handleSubmit(searchFn), 500)}>
-                    <InputField
-                        icon={<FaSearch />}
-                        placeholder="Search Here"
-                        label=""
-                        name='search'
-                        register={register}
-                    />
-                </form>
+            <div className='create-search-row'>
+                <div className='create-admin'>
+                    <Link to='/admin/create-admin'>
+                        <div className="admin-create">
+                            <MdOutlineAdminPanelSettings />
+                            <h3>Create Admin</h3>
+                        </div>
+                    </Link>
+                </div>
+                <div className='search-box'>
+                    <form onChange={debounce(handleSubmit(searchFn), 500)}>
+                        <InputField
+                            icon={<FaSearch />}
+                            placeholder="Search Here"
+                            label=""
+                            name='search'
+                            register={register}
+                        />
+                    </form>
+                </div>
             </div>
+
             <div className='admin-list'>
 
                 <table className='admin-list-table'>
@@ -206,7 +218,7 @@ const AdminList = () => {
                     <tbody>
                         {userData && userData?.map((user, index) => (
                             <tr key={index} onClick={() => handleRowClick(user?.id)}>
-                                <td>{(totalPages?.currentPage * 10 - 10) + index + 1}</td>
+                                <td>{(totalPages?.currentPage - 1) * totalPages?.perpage + index + 1}</td>
                                 <td>{user?.details.firstName.en}</td>
                                 <td>{user?.details.lastName.en}</td>
                                 <td>{user?.details.phoneNumber}</td>
@@ -220,38 +232,36 @@ const AdminList = () => {
                         ))
                         }
                     </tbody>
-
                 </table>
-
-                {
-                    totalPages?.totalPages || 0 > 1 ?
-                        <Pagination
-                            setTotalPages={setTotalPages as React.Dispatch<React.SetStateAction<PaginationInterface>>}
-                            pagination={totalPages ?? defaultPagination}
-                            setRefresh={setRefresh}
-                        /> : <></>
-                }
-
-                <Dialog open={viewDialogOpen} onClose={closeViewDialog}>
-                    <AdminDetails id={id} />
-                </Dialog>
-
-                <Dialog open={dialogOpen} onClose={closeDialog}>
-                    <UpdateAdmin
-                        id={id}
-                        closeDialog={closeDialog}
-                        user={specificUser}
-                        handleUserUpdate={handleUserUpdate}
-                    />
-                </Dialog>
-
-                <ConfirmationModal
-                    isOpen={showConfirmation}
-                    onCancel={handleCancel}
-                    onConfirm={handleDeleteConfirmed}
-                />
-
             </div >
+
+            {
+                totalPages?.totalPages ?
+                    <Pagination
+                        setTotalPages={setTotalPages as React.Dispatch<React.SetStateAction<PaginationInterface>>}
+                        pagination={totalPages ?? defaultPagination}
+                        setRefresh={setRefresh}
+                    /> : <></>
+            }
+
+            <Dialog open={viewDialogOpen} onClose={closeViewDialog}>
+                <AdminDetails id={id} />
+            </Dialog>
+
+            <Dialog open={dialogOpen} onClose={closeDialog}>
+                <UpdateAdmin
+                    id={id}
+                    closeDialog={closeDialog}
+                    user={specificUser}
+                    handleUserUpdate={handleUserUpdate}
+                />
+            </Dialog>
+
+            <ConfirmationModal
+                isOpen={showConfirmation}
+                onCancel={handleCancel}
+                onConfirm={handleDeleteConfirmed}
+            />
         </>
     )
 }

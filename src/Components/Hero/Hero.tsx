@@ -4,8 +4,7 @@ import './Hero.css';
 const Hero = () => {
     const [email, setEmail] = useState<string>("");
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const handleKeyDown = (e: any) => {
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
             handleSubscribeButton();
         }

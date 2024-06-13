@@ -14,7 +14,7 @@ import './UpdateAdmin.css';
 
 
 const UpdateAdmin: React.FC<UpdateAdminProps> = ({ id, user, closeDialog, handleUserUpdate }) => {
-    const { register, handleSubmit, formState: { errors }, reset } = useForm<UserCreateInterface>();
+    const { register, handleSubmit, formState: { isSubmitting, errors }, reset } = useForm<UserCreateInterface>();
     const fetchAdmin = () => {
         try {
             const fetchedData = user;
@@ -46,9 +46,11 @@ const UpdateAdmin: React.FC<UpdateAdminProps> = ({ id, user, closeDialog, handle
         }
     }
     // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
-    const deepMerge = (target: any, source: any): any => {
+    const deepMerge = (target: any, source: any) => {
         for (const key in source) {
-            if (source[key] && typeof source[key] === 'object') {
+            if (Array.isArray(source[key])) {
+                target[key] = source[key];
+            } else if (source[key] && typeof source[key] === 'object') {
                 if (!target[key]) {
                     target[key] = {};
                 }
@@ -86,7 +88,7 @@ const UpdateAdmin: React.FC<UpdateAdminProps> = ({ id, user, closeDialog, handle
                 type: 'success'
             });
             try {
-                const UpdatedUserData = deepMerge(user, data);
+                const UpdatedUserData = deepMerge({ ...user }, data);
                 // setSpecificUser(UpdatedUserData);
                 handleUserUpdate(UpdatedUserData);
                 closeDialog();
@@ -253,8 +255,9 @@ const UpdateAdmin: React.FC<UpdateAdminProps> = ({ id, user, closeDialog, handle
                                 ]}
                                 register={register}
                                 options={{ required: 'Role is required' }}
+
                             />
-                            {errors?.password?.message &&
+                            {errors?.role?.message &&
                                 <span className='red-text'>
                                     {errors?.role?.message}
                                 </span>}
@@ -283,6 +286,7 @@ const UpdateAdmin: React.FC<UpdateAdminProps> = ({ id, user, closeDialog, handle
                     <div className='btn-container'>
                         <Button
                             name="Update Admin"
+                            disabled={isSubmitting}
                         />
                     </div>
                 </form>

@@ -2,12 +2,10 @@ import { FaDollarSign } from "react-icons/fa"
 import { IoBagCheck } from "react-icons/io5"
 import './AdminDashboard.css'
 import LineGraph from "./LineGraph"
-import AdminHome from "Components/AdminHome/AdminHome"
 
 const AdminDashboard = () => {
     return (
         <div className="admin-dashboard">
-            <AdminHome />
             
             <h1 id="reports">Reports</h1>
 

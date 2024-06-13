@@ -1,15 +1,18 @@
 import React from 'react';
 import './CheckboxGroup.css';
+import { UseFormRegister } from 'react-hook-form';
 
 interface CheckboxProps {
     label: string;
     name: string;
     options: { label: string; value: string }[];
-    register: any;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    register: UseFormRegister<any>;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     validationOptions?: any;
 }
 
-const Checkbox: React.FC<CheckboxProps> = ({ label, name, options, register, validationOptions }) => {
+const Checkbox: React.FC<CheckboxProps> = ({ label, name, options, register, validationOptions={} }) => {
     return (
         <div className='checkbox'>
             <label><h4>{label}<span className='red-text'>{validationOptions?.required ? " *" : ""}</span></h4></label>

@@ -28,6 +28,16 @@
     border: none;
     outline: none;
     flex: 1;
-    background-color: var(--primary-color);
+    background-color: transparent;
     color: var(--secondary-color);
+}
+
+.input-field .input-wrapper {
+    background-color: transparent;
+}
+
+
+.input-error {
+    border: 1px solid red !important;
+    /* background-color: red !important; */
 }

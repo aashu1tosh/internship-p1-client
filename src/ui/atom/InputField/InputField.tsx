@@ -1,5 +1,5 @@
 import React from 'react';
-import { UseFormRegister } from 'react-hook-form';
+import { FieldError, UseFormRegister } from 'react-hook-form';
 import './InputField.css';
 
 interface InputFieldProps {
@@ -13,15 +13,15 @@ interface InputFieldProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   options?: any;
   readOnly?: boolean;
-
+  error?: FieldError
 }
 
-const InputField: React.FC<InputFieldProps> = ({ icon, placeholder, name, label, type = "text", register, options = {}, readOnly = false }) => {
+const InputField: React.FC<InputFieldProps> = ({ icon, placeholder, name, label, type = "text", register, options = {}, readOnly = false, error }) => {
 
   return (
     <div className="input-field">
       {label && <label className="input-label">{label} <span className='red-text'>{options?.required ? "*" : ""}</span></label>}
-      <div className="input-wrapper">
+      <div className={`input-wrapper ${error ? 'input-error' : ''}`}>
         {icon && <span className="input-icon">{icon}</span>}
         <input
           type={type}

@@ -17,7 +17,6 @@ import ProtectedRoute from './ProtectedRoute'
 
 
 function App() {
-  console.log(import.meta.env.VITE_APP_GOOGLE_OAUTH_CLIENT_ID)
   const router = createBrowserRouter([
     {
       index: true,

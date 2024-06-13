@@ -1,0 +1,32 @@
+.upload-media {
+    margin: 20px 10px;
+    padding: 20px 10px;
+    display: flex;
+    /* flex-direction: column; */
+    align-items: center;
+}
+
+.upload-media input {
+    display: none;
+}
+
+.upload-media label {
+    margin-right: 30px;
+    cursor: pointer;
+    border: 1px solid var(--site-color);
+    padding: 10px 20px;
+    border-radius: 8px;
+}
+
+.upload-media button {
+    padding: 10px 25px;
+    border-radius: 18px;
+    border: 2px solid var(--site-color);
+    background: transparent;
+    color: var(--secondary-color);
+    cursor: pointer;
+}
+
+.upload-media button:hover {
+    box-shadow: 0 0 24px var(--site-color);
+}

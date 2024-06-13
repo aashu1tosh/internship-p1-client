@@ -1,6 +1,8 @@
 import axios from '@services/instance'
+import ImageUpload from 'Components/ImageUpload/ImageUpload'
 import { UserCreateInterface } from 'interface/global.interface'
 import { useForm } from 'react-hook-form'
+import { BiReset } from 'react-icons/bi'
 import { FaLock, FaPhone, FaUser } from 'react-icons/fa'
 import { MdEmail } from 'react-icons/md'
 import Button from 'ui/atom/Buttons/Buttons'
@@ -11,7 +13,7 @@ import { toast } from 'ui/atom/Toast/ToastManager'
 import './CreateAdmin.css'
 
 const CreateAdmin = () => {
-    const { register, handleSubmit, watch, reset, formState: { errors } } = useForm<UserCreateInterface>({
+    const { register, handleSubmit, watch, reset, formState: { isSubmitting, errors } } = useForm<UserCreateInterface>({
         defaultValues: {
             email: "",
             password: "",
@@ -82,7 +84,16 @@ const CreateAdmin = () => {
             <h1 className='underline-site-color'>Create Account</h1>
             <div className="create-admin-content">
 
+
                 <form onSubmit={handleSubmit(createAdmin)}>
+
+                    <div className='reset-button-container'>
+                        <div></div>
+                        <div onClick={() => reset()} style={{ cursor: 'pointer' }}>
+                            <BiReset size={25} color={"red"} />
+                        </div>
+                    </div>
+
                     <div className='name-field'>
                         <div>
                             <InputField
@@ -92,6 +103,7 @@ const CreateAdmin = () => {
                                 name="details.firstName.en"
                                 register={register}
                                 options={{ required: "First name is required" }}
+                                error={errors?.details?.firstName?.en}
                             />
                             {errors?.details?.firstName?.en?.message &&
                                 <span className='red-text'>
@@ -105,6 +117,8 @@ const CreateAdmin = () => {
                                 label="आफ्नो पहिलो नाम प्रविष्ट गर्नुहोस्"
                                 name="details.firstName.ne"
                                 register={register}
+                                error={errors?.details?.firstName?.ne}
+
                             />
                             {errors?.details?.firstName?.ne?.message &&
                                 <span className='red-text'>
@@ -119,6 +133,8 @@ const CreateAdmin = () => {
                                 label="Enter your middle name"
                                 name="details.middleName.en"
                                 register={register}
+                                error={errors?.details?.middleName?.en}
+
                             />
                             {errors?.details?.middleName?.en?.message &&
                                 <span className='red-text'>
@@ -132,10 +148,12 @@ const CreateAdmin = () => {
                                 label="आफ्नो बीचको नाम प्रविष्ट गर्नुहोस्"
                                 name="details.middleName.ne"
                                 register={register}
+                                error={errors?.details?.middleName?.ne}
+
                             />
                             {errors?.details?.middleName?.en?.message &&
                                 <span className='red-text'>
-                                    {errors?.details?.middleName?.en?.message}
+                                    {errors?.details?.middleName?.ne?.message}
                                 </span>}
                         </div>
                     </div>
@@ -149,6 +167,8 @@ const CreateAdmin = () => {
                                 name="details.lastName.en"
                                 register={register}
                                 options={{ required: "Last name is required" }}
+                                error={errors?.details?.lastName?.en}
+
                             />
                             {errors?.details?.lastName?.en?.message &&
                                 <span className='red-text'>
@@ -162,15 +182,15 @@ const CreateAdmin = () => {
                                 label="आफ्नो थर प्रविष्ट गर्नुहोस्"
                                 name="details.lastName.ne"
                                 register={register}
+                                error={errors?.details?.lastName?.ne}
+
                             />
                             {errors?.details?.lastName?.ne?.message &&
                                 <span className='red-text'>
                                     {errors?.details?.lastName?.ne?.message}
                                 </span>}
                         </div>
-                        {/* </div> */}
 
-                        {/* <div className='email-phone'> */}
                         <div>
                             <InputField
                                 icon={<FaPhone style={{ rotate: '90deg' }} />}
@@ -180,6 +200,8 @@ const CreateAdmin = () => {
                                 register={register}
                                 type='tel'
                                 options={{ required: "Phone number is required" }}
+                                error={errors?.details?.phoneNumber}
+
                             />
                             {errors?.details?.phoneNumber?.message &&
 
@@ -197,6 +219,8 @@ const CreateAdmin = () => {
                                 name="email"
                                 register={register}
                                 options={{ required: "Email address is required" }}
+                                error={errors?.email}
+
                             />
 
                             {errors?.email?.message &&
@@ -222,6 +246,8 @@ const CreateAdmin = () => {
                                         message: "Minimum Length of 8 required."
                                     }
                                 }}
+                                error={errors?.password}
+
                             />
                             {errors?.password?.message &&
                                 <span className='red-text'>
@@ -246,6 +272,8 @@ const CreateAdmin = () => {
                                     validate: (value: string) =>
                                         value === password || "The passwords do not match"
                                 }}
+                                error={errors?.confirmPassword}
+
 
                             />
                             {errors?.confirmPassword?.message &&
@@ -266,6 +294,7 @@ const CreateAdmin = () => {
                                 ]}
                                 register={register}
                                 options={{ required: 'Role is required' }}
+                                error={errors?.role}
                             />
                             {errors?.role?.message &&
                                 <span className='red-text'>
@@ -296,11 +325,14 @@ const CreateAdmin = () => {
                     <div className='btn-container'>
                         <Button
                             name="Create Admin"
+                            disabled={isSubmitting}
                         />
                     </div>
 
                 </form>
             </div>
+
+            <ImageUpload />
         </div>
     )
 }

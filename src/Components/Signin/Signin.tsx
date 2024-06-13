@@ -67,8 +67,6 @@ const Signin = () => {
             const response = await axios.post('/auth/google', {
                 googleId: credentialResponse?.credential
             })
-
-            console.log(response);
             const token = EncryptDecrypt.encrypt(response?.data?.data?.tokens?.accessToken);
             localStorage.setItem("accessToken", token as string);
             localStorage.setItem("role", response?.data?.data?.admin?.role.replace('_', " ").toLowerCase());
@@ -152,7 +150,6 @@ const Signin = () => {
                     <div className='google-login'>
                         <GoogleLogin
                             onSuccess={(credentialResponse) => {
-                                console.log(credentialResponse);
                                 signinWithGoogle(credentialResponse)
                             }}
                         />

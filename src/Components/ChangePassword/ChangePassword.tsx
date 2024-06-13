@@ -14,7 +14,7 @@ interface updatePasswordInterface {
 
 const ChangePassword = () => {
   const [showPassword, setShowPassword] = useState<boolean>(false);
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const { register, handleSubmit, formState: { isSubmitting, errors } } = useForm();
   const navigate = useNavigate();
 
 
@@ -94,7 +94,7 @@ const ChangePassword = () => {
               <div className='red-text'>{errors.newPassword.message}</div>
             )}
             <div className="button">
-              <button className='' type='submit'>Change Password</button>
+              <button className='' type='submit' disabled={isSubmitting}>Change Password</button>
             </div>
           </form>
         </div>

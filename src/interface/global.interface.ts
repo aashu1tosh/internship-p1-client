@@ -95,3 +95,6 @@ export interface UserInterface {
     createdAt: string
 }
 
+export interface SearchObject {
+    search: string;
+}

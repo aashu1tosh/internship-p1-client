@@ -3,6 +3,7 @@ import Home from 'Components/Home/Home'
 import Signin from 'Components/Signin/Signin'
 import './App.css'
 
+import { GoogleOAuthProvider } from '@react-oauth/google'
 import AdminList from 'Components/AdminList/AdminList'
 import ChangePassword from 'Components/ChangePassword/ChangePassword'
 import CreateAdmin from 'Components/CreateAdmin/CreateAdmin'
@@ -16,6 +17,7 @@ import ProtectedRoute from './ProtectedRoute'
 
 
 function App() {
+  console.log(import.meta.env.VITE_APP_GOOGLE_OAUTH_CLIENT_ID)
   const router = createBrowserRouter([
     {
       index: true,
@@ -62,8 +64,10 @@ function App() {
 
   return (
     <React.StrictMode>
-      <div id="toast-container-main"></div>
-      <RouterProvider router={router} />
+      <GoogleOAuthProvider clientId={import.meta.env.VITE_APP_GOOGLE_OAUTH_CLIENT_ID}>
+        <div id="toast-container-main"></div>
+        <RouterProvider router={router} />
+      </GoogleOAuthProvider>
     </React.StrictMode>
   )
 }

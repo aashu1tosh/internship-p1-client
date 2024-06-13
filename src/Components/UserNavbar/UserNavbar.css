@@ -8,12 +8,18 @@
     width: 100%;
 }
 
+#unique-navbar p {
+    color: white;
+}
+
 #unique-navbar .navbar-logo img {
     height: 40px;
 }
 
 #unique-navbar .navbar-links {
     display: flex;
+    align-items: center;
+    /* justify-content: ; */
 }
 
 #unique-navbar .navbar-links li {

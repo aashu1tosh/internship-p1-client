@@ -8,7 +8,7 @@ const UserNavbar: React.FC = () => {
 
     return (
         <div id="unique-navbar">
-            <div></div>
+            <div><p>Welcome {localStorage.getItem("username")}</p></div>
             <Link to='/'>
                 <div className="navbar-logo">
                     <img src={image?.logo} alt="Logo" />
@@ -16,7 +16,7 @@ const UserNavbar: React.FC = () => {
             </Link>
 
             <div className="navbar-links">
-                {/* <li>Logout</li> */}
+                <li>{localStorage.getItem("role")}</li>
                 <li><ThemeToggleButton /></li>
             </div>
         </div>

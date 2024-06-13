@@ -3,7 +3,7 @@ import { FaSignOutAlt, FaTachometerAlt } from 'react-icons/fa';
 import { MdAdminPanelSettings } from 'react-icons/md';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'ui/atom/Toast/ToastManager';
-import ConfirmationModal from 'ui/organism/ConfirmationModal/ConfiramtionModal';
+import ConfirmationModal from 'ui/organism/ConfirmationModal/ConfirmationModal';
 import './Sidebar.css';
 
 
@@ -15,6 +15,11 @@ const Sidebar: React.FC = () => {
     const logout = () => {
         localStorage.removeItem("accessToken");
         sessionStorage.removeItem("accessToken");
+
+        localStorage.removeItem("username");
+        localStorage.removeItem("role");
+        setShowConfirmation(false);
+
         toast.show({
             title: 'Success',
             content: 'Successfully Logged Out',
@@ -26,12 +31,6 @@ const Sidebar: React.FC = () => {
 
     const confirmLogout = () => {
         setShowConfirmation(true);
-    };
-
-    const handleDeleteConfirmed = () => {
-        localStorage.removeItem("accessToken");
-        sessionStorage.removeItem("accessToken");
-        setShowConfirmation(false);
     };
 
     const handleCancel = () => {
@@ -53,7 +52,7 @@ const Sidebar: React.FC = () => {
             <ConfirmationModal
                 isOpen={showConfirmation}
                 onCancel={handleCancel}
-                onConfirm={handleDeleteConfirmed}
+                onConfirm={logout}
             />
         </>
     );

@@ -74,6 +74,10 @@
     justify-content: center;
 }
 
+/* .signin .button button {
+    margin-bottom: 10px;
+} */
+
 input:-internal-autofill-selected {
     background-color: white !important;
 }
@@ -87,4 +91,11 @@ input:-internal-autofill-selected {
 .signin-end {
     background-color: var(--primary-color);
     color: var(--secondary-color);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.google-login {
+    margin: 10px;
 }

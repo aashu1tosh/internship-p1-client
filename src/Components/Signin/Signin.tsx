@@ -1,13 +1,14 @@
 import { image } from '@config/constant/image';
 import EncryptDecrypt from '@functions/EncryptDecrypt';
+import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 import { AxiosError, AxiosResponse } from 'axios';
 import { useState } from 'react';
 import { SubmitHandler, useForm } from "react-hook-form";
 import { FaEye, FaEyeSlash } from 'react-icons/fa';
 import { Link, useNavigate } from 'react-router-dom';
-// import Toast from 'ui/atom/Toast/Toast';
 import { toast } from 'ui/atom/Toast/ToastManager';
 import axios from '../../services/instance';
+
 import './Signin.css';
 
 interface FormData {
@@ -44,7 +45,7 @@ const Signin = () => {
 
                 toast.show({
                     title: 'Success',
-                    content: 'You have successfully Logged in!',
+                    content: response?.data?.message,
                     duration: 5000,  // Duration in milliseconds,
                     type: 'success'
                 });
@@ -59,6 +60,29 @@ const Signin = () => {
                 });
                 console.error('Error fetching data:', error);
             });
+    }
+
+    const signinWithGoogle = async (credentialResponse: CredentialResponse) => {
+        try {
+            const response = await axios.post('/auth/google', {
+                googleId: credentialResponse?.credential
+            })
+
+            console.log(response);
+            const token = EncryptDecrypt.encrypt(response?.data?.data?.tokens?.accessToken);
+            localStorage.setItem("accessToken", token as string);
+            localStorage.setItem("role", response?.data?.data?.admin?.role.replace('_', " ").toLowerCase());
+            localStorage.setItem("username", response?.data?.data?.admin?.username);
+            toast.show({
+                title: 'Success',
+                content: response?.data?.message,
+                duration: 5000,  // Duration in milliseconds,
+                type: 'success'
+            });
+            navigate('/admin', { replace: true });
+        } catch (error) {
+            console.log(error, 'error in auth google')
+        }
     }
 
 
@@ -118,12 +142,23 @@ const Signin = () => {
 
                         <div className="button">
                             <button className='signin-button' type='submit' disabled={isSubmitting}>Sign In</button>
+
                         </div>
 
                     </form>
                 </div>
 
                 <div className='signin-end'>
+                    <div className='google-login'>
+                        <GoogleLogin
+                            onSuccess={(credentialResponse) => {
+                                console.log(credentialResponse);
+                                signinWithGoogle(credentialResponse)
+                            }}
+                        />
+                    </div>
+
+
                     <p>Don't have an account <span className='blue-text'>Sign up</span></p>
                     <p style={{ textAlign: 'center' }}>Forget Password?</p>
                 </div>

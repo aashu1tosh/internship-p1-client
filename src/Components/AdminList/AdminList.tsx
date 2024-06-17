@@ -218,7 +218,7 @@ const AdminList = () => {
                     <tbody>
                         {userData && userData?.map((user, index) => (
                             <tr key={index} onClick={() => handleRowClick(user?.id)}>
-                                <td>{(totalPages?.currentPage - 1) * totalPages?.perpage + index + 1}</td>
+                                <td>{(totalPages?.currentPage - 1) * (totalPages?.perpage || 10) + index + 1}</td>
                                 <td>{user?.details.firstName.en}</td>
                                 <td>{user?.details.lastName.en}</td>
                                 <td>{user?.details.phoneNumber}</td>

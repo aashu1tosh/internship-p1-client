@@ -18,6 +18,7 @@ const Pagination: React.FC<PaginationProps> = ({ pagination, setTotalPages, setR
 
     const perPageClick = (e: React.ChangeEvent<HTMLInputElement>) => {
         const perPage = parseInt(e.target.value, 10);
+
         setTotalPages({ ...pagination, perpage: perPage });
         setTimeout(() => setRefresh(prev => !prev), 1800);
     };

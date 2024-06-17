@@ -50,12 +50,6 @@ const ImageUpload = () => {
             <label htmlFor="upload" >Upload media here</label>
             <input type="file" id="upload" onChange={handleFileChange} accept="image/*" />
             <button onClick={handleUpload}>Upload</button>
-
-            {/* <div>
-                <input type="radio" id="html" name="fav_language" defaultValue="HTML" />
-                <label htmlFor="html">HTML</label><br /><br />
-            </div> */}
-
         </div>
     );
 };
